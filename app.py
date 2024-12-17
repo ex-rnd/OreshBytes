@@ -1,5 +1,6 @@
 # Import Packages 
 
+import pandas as pd
 import streamlit as st
 import sqlite3
 
@@ -12,10 +13,16 @@ def create_usertable():
 
 def add_userdata(username,password):
     c.execute('INSERT INTO userstable(username, password) VALUES (?,?)', (username, password))
+    conn.commit()
 
 def login_user(username,password):
-    c.execute('SELECT * FROM usertable WHERE username=? AND password=?', (username, password))
+    c.execute('SELECT * FROM userstable WHERE username=? AND password=?', (username, password))
     data = c.fetchall() 
+    return data
+
+def view_all_users():
+    c.execute('SELECT * FROM userstable')
+    data = c.fetchall()
     return data
 
 
@@ -39,7 +46,11 @@ def main():
 
         if st.sidebar.checkbox("Login"):
 
-            if password == '12345':
+            # if password == '12345':
+            create_usertable()
+            result = login_user(username, password)
+            
+            if result:
                 st.success("Logged In as {}".format(username))
 
                 task = st.selectbox("Task", ["Add Post", "Analytics", "Profiles"])
@@ -51,9 +62,13 @@ def main():
 
                 elif task == "Profiles":
                     st.subheader("User Profiles")
+                    user_result = view_all_users()
+                    clean_df = pd.DataFrame(user_result, columns=["Username", "Password"])       
+                    st.dataframe(clean_df)
 
             else:
                 st.warning("Incorrect Username/Password")
+
 
     elif choice == "Signup":
         st.subheader("Signup Section")
@@ -62,6 +77,11 @@ def main():
         new_password = st.sidebar.text_input("Password", type='password')
 
         if st.sidebar.button("Signup"):
+            create_usertable()
+            add_userdata(new_user, new_password)
+
+
+
             st.sidebar.success("You have successfully created a valid Account")
             st.sidebar.info("Go to Login Menu to login")
 
