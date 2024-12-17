@@ -14,7 +14,7 @@ def add_userdata(username,password):
     c.execute('INSERT INTO userstable(username, password) VALUES (?,?)', (username, password))
 
 def login_user(username,password):
-    c.execute('SELECT * FROM usertable WHERE username *? AND password=*?', (username, password))
+    c.execute('SELECT * FROM usertable WHERE username=? AND password=?', (username, password))
     data = c.fetchall() 
     return data
 
