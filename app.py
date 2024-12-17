@@ -1,8 +1,8 @@
 # Import Packages 
-
 import pandas as pd
 import streamlit as st
 import sqlite3
+
 
 # Database Connection
 conn = sqlite3.connect('data.db')
@@ -31,14 +31,14 @@ def main():
 
     st.title("OreshBytes")
 
-    menu = ["Home", "Login", "Signup"]
+    menu = ["🏠 Home", "🔓 SignIn", "🔐 SignUp"]
 
     choice = st.sidebar.selectbox("Menu", menu)
 
-    if choice == "Home":
+    if choice == "🏠 Home":
         st.subheader("Home")
 
-    elif choice == "Login":
+    elif choice == "🔓 SignIn":
         st.subheader("Login Section")
 
         username = st.sidebar.text_input("User Name")
@@ -70,7 +70,7 @@ def main():
                 st.warning("Incorrect Username/Password")
 
 
-    elif choice == "Signup":
+    elif choice == "🔐 SignUp":
         st.subheader("Signup Section")
 
         new_user = st.sidebar.text_input("Username")
